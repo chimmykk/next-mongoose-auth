@@ -3,3 +3,19 @@
 @tailwind utilities;
 
 
+*{
+    box-sizing: border-box;
+    font-weight: normal;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    cursor: pointer;
+    font-size: 2rem;
+    border: 1px solid black;
+    background-color: white;
+}

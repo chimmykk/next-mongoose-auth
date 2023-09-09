@@ -7,6 +7,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+        gridTemplateColumns: {
+          cols: "repeat(4, 100px)",
+      },
+      gridColumn: {
+          fullWidth: "1 / -1"
+      },
+      gridTemplateRows: {
+          rows: "minmax(120px, auto) repeat(5, 100px)"
+      } ,   
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
