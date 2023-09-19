@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
 
+const modelName = 'Seller';
+
+const existingSellerModel = mongoose.models[modelName];
+
 const sellerSchema = new mongoose.Schema({
   category: String,
   subcategory: String,
@@ -20,7 +24,6 @@ const sellerSchema = new mongoose.Schema({
   }
 });
 
-// Define the model using the schema
-const Seller = mongoose.model('Seller', sellerSchema);
+const Seller = existingSellerModel || mongoose.model(modelName, sellerSchema);
 
 export default Seller;
