@@ -1,22 +1,50 @@
-import mongoose, { Schema, models } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
-    username: { 
+    name: {
       type: String,
       required: true,
     },
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
-      required: true,
+      required: false, // Make password optional for Google-authenticated users
     },
+    verification_token: {
+      type: String,
+      required: false, // Make verification_token optional for Google-authenticated users
+    },
+    verification_code: {
+      type: String,
+      required: false, // Make verification_code optional for Google-authenticated users
+    },
+    verified: {
+      type: Boolean,
+      required: false,
+    },
+    passwordResetToken: {
+      type: String,
+      default: null,
+    },
+    passwordResetTokenExpiration: {
+      type: Date,
+      default: null,
+    },
+    balance: {
+      type: Number,
+      default: 0,
+    },
+    phone: String,
+    image: String,
   },
   { timestamps: true }
 );
 
-const User = models.User || mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+
 export default User;
