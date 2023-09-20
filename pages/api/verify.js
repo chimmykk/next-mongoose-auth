@@ -1,6 +1,7 @@
 // verify email address // Fix the folder directory * 
 import { connectMongoDB } from '../../lib/mongodb';
 import User from '../../models/user';
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {

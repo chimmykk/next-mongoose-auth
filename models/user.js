@@ -41,6 +41,9 @@ const userSchema = new Schema(
     },
     phone: String,
     image: String,
+    profileImage: String,  
+    bannerImage: String,
+    bio: String            
   },
   { timestamps: true }
 );

@@ -8,22 +8,29 @@ module.exports = {
   theme: {
     extend: {
         gridTemplateColumns: {
-          cols: "repeat(4, 100px)",
-      },
-      gridColumn: {
-          fullWidth: "1 / -1"
-      },
-      gridTemplateRows: {
-          rows: "minmax(120px, auto) repeat(5, 100px)"
-      } ,   
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        fluid: "repeat(auto-fit, minmax(300px, 1fr))",
+      },    
+      backgroundColor: {
+        bgGreen: "#25D366",
+        hoverGreen: "#1EAC4F",
+        bgGray: "#F7F7F8",
+        bgDark: "#313338",
+        darkLint: "#1E1F22"
       },
       textColor: {
-        grayText: "#575353",
+        grayText: "#f1eeee",
+        hoverGreen: "#1EAC4F",
+        bgGreen: "#25D366",
+        bgDark: "#313338",
+      },
+      borderColor: {
+        borderC: "#25D366",
+        bgDark: "#313338"
+      },
+      boxShadowColor: {
+        bgGreen: "#25D366"
       }
+      
     },
   },
   plugins: [],

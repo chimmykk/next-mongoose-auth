@@ -1,108 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { connectMongoDB } from '../../lib/mongodb';
-import Seller from '../../models/seller';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-interface Address {
-  addressLine1?: string;
-  addressLine2?: string;
-  state?: string;
-  city?: string;
-  country?: string;
-}
-
-const AddressDisplay: React.FC = () => {
-  const [addresses, setAddresses] = useState<Address[]>([]);
-  const [objectId, setObjectId] = useState<string | null>(null);
-  const { data: session, status: sessionStatus } = useSession();
+const ProfilePicture = () => {
+  const [profileImage, setProfileImage] = useState(null);
+  const { data: session } = useSession(); // Destructure `data` property from `useSession` hook
 
   useEffect(() => {
-    const fetchAddresses = async () => {
+    const fetchProfileImage = async () => {
       try {
-        await connectMongoDB();
+        const email = session?.user?.email;
 
-        if (session && session.user && session.user.email) {
-          const seller = await Seller.findOne({ email: session.user.email });
-          if (seller) {
-            const { returnAddress } = seller;
-            if (returnAddress) {
-              setAddresses([returnAddress]);
-            } else {
-              console.error('No return address found for the seller');
-            }
-          } else {
-            console.error('Seller not found');
-          }
-        } else {
-          console.error('User session or email not available');
+        if (!email) {
+          console.error('User email not found.');
+          return;
         }
-      } catch (error) {
-        console.error('An error occurred:', error);
-      }
-    };
 
-    const fetchObjectId = async () => {
-      try {
-        if (session?.user?.email) {
-          const route1 = `/api/fetch/route?email=${encodeURIComponent(session.user.email)}`;
-          const response = await fetch(route1);
-      
-          if (response.ok) {
-            const data = await response.json();
-            setObjectId(data._id);
-          } else {
-            console.error('Failed to fetch object ID');
-          }
-        }
-      } catch (error) {
-        console.error('An error occurred:', error);
-      }
-    };
+        const response = await fetch(`/api/upload/image?email=${encodeURIComponent(email)}`);
 
-    fetchAddresses();
-    fetchObjectId();
-  }, [session]);
-
-  const fetchSellerInfo = async () => {
-    if (objectId) {
-      try {
-        const response = await fetch(`/api/seller?objectId=${encodeURIComponent(objectId)}`);
         if (response.ok) {
           const data = await response.json();
-          console.log('Seller information:', data);
+          setProfileImage(data.profileImage);
         } else {
-          console.error('Failed to fetch seller information');
+          console.error('Failed to fetch profile image:', response.statusText);
         }
       } catch (error) {
-        console.error('Failed to fetch seller information:', error);
+        console.error('An error occurred while fetching profile image:', error);
       }
-    }
-  };
+    };
 
-  useEffect(() => {
-    fetchSellerInfo();
-  }, [objectId]);
-
-  if (sessionStatus === 'loading') {
-    return <div>Loading...</div>;
-  }
+    fetchProfileImage();
+  }, [session?.user?.email]);
 
   return (
-    <div>
-      <h2>Addresses:</h2>
-      <ul>
-        {addresses.map((address, index) => (
-          <li key={index}>
-            <strong>Address Line 1:</strong> {address.addressLine1 || 'N/A'}<br />
-            <strong>Address Line 2:</strong> {address.addressLine2 || 'N/A'}<br />
-            <strong>State:</strong> {address.state || 'N/A'}<br />
-            <strong>City:</strong> {address.city || 'N/A'}<br />
-            <strong>Country:</strong> {address.country || 'N/A'}<br />
-          </li>
-        ))}
-      </ul>
+    <div className="bg-white border rounded-lg p-4 mt-4">
+      <h3 className="text-lg font-semibold">Profile Picture</h3>
+      <div className="mt-2 flex items-center">
+        <div className="w-28 h-28 bg-gray-400 rounded-full mr-4">
+          {profileImage ? (
+            <img
+              src={`data:image/jpeg;base64,${profileImage}`}
+              alt="Profile Picture"
+              className="w-full h-full rounded-full"
+            />
+          ) : (
+            <span>No profile picture available</span>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default AddressDisplay;
+export default ProfilePicture;

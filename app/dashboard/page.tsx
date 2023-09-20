@@ -1,6 +1,9 @@
 import { signOut, useSession } from "next-auth/react";
 import AddressForm from '../form/addresspage'; // Import the AddressForm component
 import React from "react";
+import Settings from "../settings/page";
+import ProfilePicture from "../displayform/page";
+import ProfileBanner from "../profilebanner/page";
 
 const Dashboard = () => {
   const { data: session } = useSession();
@@ -18,6 +21,9 @@ const Dashboard = () => {
       {/* Render the AddressForm component here */}
 
       <AddressForm />
+<ProfilePicture></ProfilePicture>
+<Settings></Settings>
+<ProfileBanner></ProfileBanner>
 
     </div>
   );

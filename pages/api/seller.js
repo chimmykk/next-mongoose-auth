@@ -1,5 +1,3 @@
-// pages/api/seller.js
-
 import { connectMongoDB } from '../../lib/mongodb';
 import Seller from '../../models/seller';
 
